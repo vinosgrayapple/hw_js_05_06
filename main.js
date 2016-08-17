@@ -4,14 +4,13 @@ var timerId,
 	second = 0,
 	minute = 0,
 	hour = 0;
+const startColor = 'rgb(28, 184, 65)';
 
 var start = document.getElementById('start'),
-	hourId = document.getElementById('hour'),
-	minuteId = document.getElementById('minute'),
-	secondId = document.getElementById('second'),
-	timer = document.getElementById('milisecond');
+	watch = document.getElementById('watch'),
+	timer = document.getElementById('milisecond'),
+	clear = document.getElementById('clear');
 
-timer.innerHTML = '0';
 
 start.onclick = function() {
 	if (flag)
@@ -20,37 +19,40 @@ start.onclick = function() {
 		this.style.background = 'blue';
 		flag = false;
 
-		timerId = setInterval(function() {
-		timer.innerHTML = count;
+		timerId = setInterval(
+			function() {
+			count += 4;
+			if (!(count % 13)) 
+			{
+				setMillisecond();
+			}
 
-		if (count >= 1000) 
-		{
-			count = 0;
-			second++;
-		}
-		// if (second >= 60) 
-		// {
-		// 	second = 0;
-		// 	minute++;
-		// }
-		// if (minute >= 60) 
-		// {
-		// 	minute = 0;
-		// 	hour++;
-		// }
-		// if ( hour >= 24) 
-		// {
-		// 	toZero();
-		// }
-
-		// setTime();
-		count++;
-									},1);
+			if (count >= 1000) 
+			{
+				count = 0;
+				second++;
+				setTime();
+			if (second >= 60) 
+			{
+				second = 0;
+				minute++;
+			if (minute >= 60) 
+			{
+				minute = 0;
+				hour++;
+			if ( hour >= 24) 
+			{
+				toZero();
+			}
+			}
+			}
+			}
+		},1);
 	} 
 	else 
 	{
 		this.innerHTML = 'START';
-		this.style.background = 'rgb(28, 184, 65)';
+		this.style.background = startColor;
 		flag = true;
 		window.clearInterval(timerId);
 	}
@@ -64,20 +66,24 @@ clear.onclick = function() {
 		setTime();
 		timer.innerHTML    = '0'; 
 		start.innerHTML = 'START';
-		start.style.background = 'rgb(28, 184, 65)';
+		start.style.background = startColor;
 		flag = true;
 
 
-};
+}
+
+
 
 function checkZero(n) {
 	return n < 10 ? '0' + n : n;
 }
 
 function setTime() {
-	secondId.innerHTML = checkZero(second);
-	minuteId.innerHTML = checkZero(minute);
-	hourId.innerHTML   = checkZero(hour);
+	watch.innerHTML = checkZero(hour) + ":" + checkZero(minute) + ":"  + checkZero(second);
+}
+
+function setMillisecond() {
+	timer.innerHTML = count;
 }
 
 function toZero() {
